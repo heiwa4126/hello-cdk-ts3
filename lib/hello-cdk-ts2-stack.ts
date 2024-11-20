@@ -1,9 +1,9 @@
+import path from "node:path";
 import cdk from "aws-cdk-lib";
 import iam from "aws-cdk-lib/aws-iam";
 import lambda from "aws-cdk-lib/aws-lambda";
 import logs from "aws-cdk-lib/aws-logs";
 import type { Construct } from "constructs";
-import path from "node:path";
 
 export class HelloCdkTs2Stack extends cdk.Stack {
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {

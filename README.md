@@ -10,7 +10,9 @@ Bun にした
 ```sh
 bun i
 bunx cdk list
+bunx cdk bootstrap # 一度もCDKを実行したことのないリージョンではこれを実行。CloudFormationにスタックCDKToolkitができる
 bunx cdk deploy
+#
 bunx cdk diff
 bunx cdk destroy
 ```
