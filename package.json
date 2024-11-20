@@ -9,7 +9,7 @@
 		"build": "bun build",
 		"watch": "bun run watch",
 		"test": "jest",
-		"format": "biome format --write . && dprint fmt",
+		"format": "biome format --write . && dprint fmt && prettier README.md -w",
 		"check": "biome check --write . && dprint check",
 		"list": "cdk list",
 		"deploy": "cdk deploy --outputs-file outputs.json",
