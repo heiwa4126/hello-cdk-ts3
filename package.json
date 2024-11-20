@@ -8,11 +8,14 @@
 	"scripts": {
 		"build": "bun build",
 		"watch": "bun run watch",
-		"deploy": "cdk deploy --outputs-file outputs.json",
 		"test": "jest",
-		"format": "biome format --write .",
-		"lint": "biome lint .",
-		"check": "biome check --write ."
+		"format": "biome format --write . && dprint fmt",
+		"check": "biome check --write . && dprint check",
+		"list": "cdk list",
+		"deploy": "cdk deploy --outputs-file outputs.json",
+		"bootstrap": "cdk bootstrap",
+		"diff": "cdk diff",
+		"destroy": "cdk destroy"
 	},
 	"devDependencies": {
 		"@types/config": "^3.3.5",
