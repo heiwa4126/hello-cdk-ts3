@@ -2,11 +2,11 @@
 
 import cdk from "aws-cdk-lib";
 import "source-map-support/register";
-import { HelloCdkTs2Stack } from "../lib/hello-cdk-ts2-stack";
+import { HelloCdkTs3Stack } from "../lib/hello-cdk-ts3-stack";
 
 const app = new cdk.App();
 
-new HelloCdkTs2Stack(app, "HelloCdkTs2", {
+new HelloCdkTs3Stack(app, "HelloCdkTs3", {
 	//  If you don't specify 'env', this stack will be environment-agnostic.
 	//  Account/Region-dependent features and context lookups will not work,
 	//  but a single synthesized template can be deployed anywhere.

@@ -1,9 +1,9 @@
 // import * as cdk from 'aws-cdk-lib';
 // import { Template } from 'aws-cdk-lib/assertions';
-// import * as HelloCdkTypescript from '../lib/hello-cdk-ts2-stack';
+// import * as HelloCdkTypescript from '../lib/hello-cdk-ts3-stack';
 
 // example test. To run these tests, uncomment this file along with the
-// example resource in lib/hello-cdk-ts2-stack.ts
+// example resource in lib/hello-cdk-ts3-stack.ts
 test("SQS Queue Created", () => {
 	//   const app = new cdk.App();
 	//     // WHEN

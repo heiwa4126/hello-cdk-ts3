@@ -1,9 +1,9 @@
 {
-	"name": "hello-cdk-ts2",
+	"name": "hello-cdk-ts3",
 	"version": "0.1.0",
 	"type": "module",
 	"bin": {
-		"hello-cdk-ts2": "bin/hello-cdk-ts2.js"
+		"hello-cdk-ts3": "bin/hello-cdk-ts3.js"
 	},
 	"scripts": {
 		"build": "bun build",

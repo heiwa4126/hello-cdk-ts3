@@ -5,7 +5,7 @@ import { NodejsFunction, OutputFormat } from "aws-cdk-lib/aws-lambda-nodejs";
 import logs from "aws-cdk-lib/aws-logs";
 import type { Construct } from "constructs";
 
-export class HelloCdkTs2Stack extends cdk.Stack {
+export class HelloCdkTs3Stack extends cdk.Stack {
 	constructor(scope: Construct, id: string, props?: cdk.StackProps) {
 		super(scope, id, props);
 

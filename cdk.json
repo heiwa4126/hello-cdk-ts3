@@ -1,5 +1,5 @@
 {
-	"app": "bun bin/hello-cdk-ts2.ts",
+	"app": "bun bin/hello-cdk-ts3.ts",
 	"watch": {
 		"include": ["**"],
 		"exclude": [
