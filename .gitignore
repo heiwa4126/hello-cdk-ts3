@@ -10,3 +10,7 @@ cdk.out
 config/
 account*.sh
 outputs.json
+
+tmp/
+*.tmp
+tmp*.*

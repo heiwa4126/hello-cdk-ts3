@@ -1,7 +1,7 @@
-import path from "node:path";
 import cdk from "aws-cdk-lib";
 import iam from "aws-cdk-lib/aws-iam";
-import lambda from "aws-cdk-lib/aws-lambda";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import logs from "aws-cdk-lib/aws-logs";
 import type { Construct } from "constructs";
 
@@ -18,12 +18,15 @@ export class HelloCdkTs2Stack extends cdk.Stack {
 			autoDeleteObjects: true, // lambda(とrole)が1個増えるけど便利
 		});
 
-		const myFunction = new lambda.Function(this, "HelloS3Function", {
+		const myFunction = new NodejsFunction(this, "HelloS3Function", {
+			entry: "lambda/hello/app.mjs",
 			runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
-			handler: "app.lambdaHandler",
-			code: lambda.Code.fromAsset(path.join(__dirname, "..", "lambda", "hello"), {
-				exclude: ["*.log", "tests/**/*"],
-			}),
+			handler: "lambdaHandler",
+			bundling: {
+				minify: true, // minifyオプションを有効にする
+				// format: OutputFormat.ESM, // ES Modulesを使用する。`[Warning at /LearnHono6AwslambdaStack] If you are relying on AWS SDK v2 to be present in the Lambda environment already, please explicitly configure a NodeJS runtime of Node 16 or lower.`とか言われる。
+				// externalModules: ["aws-sdk"], // AWS SDKは外部モジュールとして扱う（デフォルト）
+			},
 			role: new iam.Role(this, "HelloS3FunctionRole", {
 				assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
 				inlinePolicies: {
@@ -39,9 +42,9 @@ export class HelloCdkTs2Stack extends cdk.Stack {
 			}),
 			environment: {
 				MyBucketName: myBucket.bucketName,
+				MyBucketRegion: this.region,
 			},
 		});
-
 		// 依存を明示する練習。myFunctionがmyBucketに依存することを明示。ほとんどの場合は不要。
 		myFunction.node.addDependency(myBucket);
 
@@ -52,8 +55,8 @@ export class HelloCdkTs2Stack extends cdk.Stack {
 
 		// Create a CloudWatch Logs Log Group for myFunction
 		const myFunctionLog = new logs.LogGroup(this, "HelloWorldFunctionLogGroup", {
-			retention: logs.RetentionDays.ONE_WEEK,
 			logGroupName: `/aws/lambda/${myFunction.functionName}`,
+			retention: logs.RetentionDays.ONE_WEEK,
 			removalPolicy: cdk.RemovalPolicy.DESTROY,
 		});
 

@@ -4,7 +4,7 @@ import { format } from "date-fns";
 export const lambdaHandler = async (event, context) => {
 	const bucketName = process.env.MyBucketName;
 
-	const s3Client = new S3Client({ region: "us-west-1" }); // Replace with your desired region
+	const s3Client = new S3Client({ region: process.env.MyBucketRegion }); // Replace with your desired region
 
 	const currentDate = format(new Date(), "yyyy-MM-dd-HH-mm-ss");
 	const key = `${currentDate}.txt`;

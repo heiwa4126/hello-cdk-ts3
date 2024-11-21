@@ -11,16 +11,18 @@
 		"test": "jest",
 		"format": "biome format --write . && dprint fmt && prettier README.md -w",
 		"check": "biome check --write . && dprint check",
-		"list": "cdk list",
-		"deploy": "cdk deploy --outputs-file outputs.json",
 		"bootstrap": "cdk bootstrap",
+		"list": "cdk list",
+		"synth": "cdk synth",
+		"deploy": "cdk deploy --outputs-file outputs.json",
 		"diff": "cdk diff",
 		"destroy": "cdk destroy"
 	},
 	"devDependencies": {
 		"@types/config": "^3.3.5",
 		"@types/node": "20.14.9",
-		"aws-cdk": "2.156.0"
+		"aws-cdk": "2.156.0",
+		"esbuild": "^0.24.0"
 	},
 	"dependencies": {
 		"@aws-cdk/aws-iam": "^1.204.0",
@@ -28,6 +30,7 @@
 		"@aws-cdk/aws-logs": "^1.204.0",
 		"aws-cdk-lib": "2.156.0",
 		"constructs": "^10.4.2",
+		"date-fns": "^4.1.0",
 		"source-map-support": "^0.5.21"
 	}
 }
