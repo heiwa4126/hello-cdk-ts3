@@ -28,3 +28,4 @@ bun run destroy
 - ✅いま mjs で書いてる lambda を ts にして、パッケージ依存もやる前処理を書く → NodejsFunction()を使えば esbundle がよしなにやってくれる
 - ✅Terraform の output サブコマンド相当のが欲しい。 [Command: output | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/cli/commands/output) → `bun run deploy` で ./outputs.json に出すようにした。run-scripts 参照。
 - jest を vitest にする。
+- `sam local invoke -t cdk.out/HelloCdkTs2.template.json` ができるはず。
