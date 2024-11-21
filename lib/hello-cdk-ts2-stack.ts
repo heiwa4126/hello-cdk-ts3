@@ -24,7 +24,8 @@ export class HelloCdkTs2Stack extends cdk.Stack {
 			description: "A utility layer with date-fns",
 		});
 
-		const myFunction = new NodejsFunction(this, "HelloS3Function", {
+		const HelloS3Function = "HelloS3Function";
+		const myFunction = new NodejsFunction(this, HelloS3Function, {
 			entry: "lambda/hello/app.ts",
 			runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
 			handler: "lambdaHandler",
@@ -35,7 +36,7 @@ export class HelloCdkTs2Stack extends cdk.Stack {
 				// externalModules: ["'@aws-sdk/*'"], // AWS SDKは外部モジュールとして扱う（NODEJS_18_X以降のデフォルト） https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs-readme.html#externals
 				externalModules: ["@aws-sdk/*", "date-fns"], // AWS SDKとdate-fnsは外部モジュールとして扱う
 			},
-			role: new iam.Role(this, "HelloS3FunctionRole", {
+			role: new iam.Role(this, `${HelloS3Function}Role`, {
 				assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
 				managedPolicies: [
 					iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
@@ -65,7 +66,7 @@ export class HelloCdkTs2Stack extends cdk.Stack {
 		});
 
 		// Create a CloudWatch Logs Log Group for myFunction
-		const myFunctionLog = new logs.LogGroup(this, "HelloWorldFunctionLogGroup", {
+		const myFunctionLog = new logs.LogGroup(this, `${HelloS3Function}LogGroup`, {
 			logGroupName: `/aws/lambda/${myFunction.functionName}`,
 			retention: logs.RetentionDays.ONE_WEEK,
 			removalPolicy: cdk.RemovalPolicy.DESTROY,

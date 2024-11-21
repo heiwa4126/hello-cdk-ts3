@@ -12,6 +12,7 @@ bun i
 bun run layer # ./layers/を作って ./node_modulesからsymlinkを張る
 bun run list  # "HelloCdkTs2"
 bun run bootstrap # 一度もCDKを実行したことのないリージョンではこれを実行。CloudFormationにスタックCDKToolkitができる。二度やっても大丈夫
+bun run synth > tmp.yml # (オプション) tmp.ymlにCloudFormationが出る。チェック用
 bun run deploy
 #
 bun run diff
