@@ -16,7 +16,7 @@ export const lambdaHandler = async (event, context) => {
 		Body: body,
 	};
 
-	let response;
+	let response: object;
 
 	try {
 		const command = new PutObjectCommand(params);

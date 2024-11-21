@@ -9,12 +9,13 @@ Bun にした
 
 ```sh
 bun i
-bunx cdk list
-bunx cdk bootstrap # 一度もCDKを実行したことのないリージョンではこれを実行。CloudFormationにスタックCDKToolkitができる
-bunx cdk deploy
+bun run layer # ./layers/を作って ./node_modulesからsymlinkを張る
+bun run list  # "HelloCdkTs2"
+bun run bootstrap # 一度もCDKを実行したことのないリージョンではこれを実行。CloudFormationにスタックCDKToolkitができる。二度やっても大丈夫
+bun run deploy
 #
-bunx cdk diff
-bunx cdk destroy
+bun run diff
+bun run destroy
 ```
 
 `cdk build` 相当が不要。
@@ -23,7 +24,7 @@ bunx cdk destroy
 
 - ✅lambda を外出しにする
 - ✅LogGroup をスタックに追加する
-- いま mjs で書いてる lambda を ts にして、パッケージ依存もやる前処理を書く
+- ✅CloudWatch のロググループが残るのを治す。
+- ✅いま mjs で書いてる lambda を ts にして、パッケージ依存もやる前処理を書く → NodejsFunction()を使えば esbundle がよしなにやってくれる
+- ✅Terraform の output サブコマンド相当のが欲しい。 [Command: output | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/cli/commands/output) → `bun run deploy` で ./outputs.json に出すようにした。run-scripts 参照。
 - jest を vitest にする。
-- Terraform の output サブコマンド相当のが欲しい。 [Command: output | Terraform | HashiCorp Developer](https://developer.hashicorp.com/terraform/cli/commands/output) → `bun run deploy` で ./outputs.json に出すようにした。run-scripts 参照。
-- CloudWatch のロググループが残るのを治す。

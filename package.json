@@ -9,9 +9,10 @@
 		"build": "bun build",
 		"watch": "bun run watch",
 		"test": "jest",
-		"format": "biome format --write . && dprint fmt && prettier README.md -w",
+		"format": "biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
 		"check": "biome check --write . && dprint check",
 		"bootstrap": "cdk bootstrap",
+		"layer": "scripts/makeLayer.sh",
 		"list": "cdk list",
 		"synth": "cdk synth",
 		"deploy": "cdk deploy --outputs-file outputs.json",
@@ -25,6 +26,7 @@
 		"esbuild": "^0.24.0"
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.697.0",
 		"@aws-cdk/aws-iam": "^1.204.0",
 		"@aws-cdk/aws-lambda": "^1.204.0",
 		"@aws-cdk/aws-logs": "^1.204.0",

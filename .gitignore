@@ -14,3 +14,5 @@ outputs.json
 tmp/
 *.tmp
 tmp*.*
+
+layers/

@@ -1,7 +1,7 @@
 import cdk from "aws-cdk-lib";
 import iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { NodejsFunction, OutputFormat } from "aws-cdk-lib/aws-lambda-nodejs";
 import logs from "aws-cdk-lib/aws-logs";
 import type { Construct } from "constructs";
 
@@ -18,17 +18,28 @@ export class HelloCdkTs2Stack extends cdk.Stack {
 			autoDeleteObjects: true, // lambda(とrole)が1個増えるけど便利
 		});
 
+		const utilLayer = new lambda.LayerVersion(this, "UtilLayer", {
+			code: lambda.Code.fromAsset("./layers/utilLayer"),
+			compatibleRuntimes: [lambda.Runtime.NODEJS_20_X],
+			description: "A utility layer with date-fns",
+		});
+
 		const myFunction = new NodejsFunction(this, "HelloS3Function", {
-			entry: "lambda/hello/app.mjs",
+			entry: "lambda/hello/app.ts",
 			runtime: lambda.Runtime.NODEJS_20_X, // Provide any supported Node.js runtime
 			handler: "lambdaHandler",
+			layers: [utilLayer],
 			bundling: {
 				minify: true, // minifyオプションを有効にする
-				// format: OutputFormat.ESM, // ES Modulesを使用する。`[Warning at /LearnHono6AwslambdaStack] If you are relying on AWS SDK v2 to be present in the Lambda environment already, please explicitly configure a NodeJS runtime of Node 16 or lower.`とか言われる。
-				// externalModules: ["aws-sdk"], // AWS SDKは外部モジュールとして扱う（デフォルト）
+				format: OutputFormat.ESM, // ES Modulesを使用する。`[Warning at /LearnHono6AwslambdaStack] If you are relying on AWS SDK v2 to be present in the Lambda environment already, please explicitly configure a NodeJS runtime of Node 16 or lower.`とか言われる。
+				// externalModules: ["'@aws-sdk/*'"], // AWS SDKは外部モジュールとして扱う（NODEJS_18_X以降のデフォルト） https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs-readme.html#externals
+				externalModules: ["@aws-sdk/*", "date-fns"], // AWS SDKとdate-fnsは外部モジュールとして扱う
 			},
 			role: new iam.Role(this, "HelloS3FunctionRole", {
 				assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+				managedPolicies: [
+					iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
+				],
 				inlinePolicies: {
 					MyBucketWriteAccess: new iam.PolicyDocument({
 						statements: [
