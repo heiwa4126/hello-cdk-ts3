@@ -42,6 +42,7 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 					},
 				},
 				required: ["name", "age"],
+				additionalProperties: false,
 			},
 		});
 		const authorResponseModel = gw.addModel("AuthorResponseModel", {
@@ -58,7 +59,16 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 			},
 		});
 
-		const authorMethodResponse = {
+		const authorRequestValidator = new apigw.RequestValidator(this, "AuthorRequestValidator", {
+			restApi: gw,
+			requestValidatorName: "AuthorRequestValidator",
+			validateRequestBody: true,
+		});
+		gw.root.addResource("author").addMethod("POST", new apigw.LambdaIntegration(authorLambda), {
+			requestModels: {
+				"application/json": authorRequestModel,
+			},
+			requestValidator: authorRequestValidator,
 			methodResponses: [
 				{
 					statusCode: "200",
@@ -73,19 +83,14 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 					},
 				},
 			],
-		};
-
-		const authorRequestValidator = new apigw.RequestValidator(this, "AuthorRequestValidator", {
-			restApi: gw,
-			requestValidatorName: "AuthorRequestValidator",
-			validateRequestBody: true,
 		});
-		gw.root.addResource("author").addMethod("POST", new apigw.LambdaIntegration(authorLambda), {
-			requestModels: {
-				"application/json": authorRequestModel,
+		const plaintextModel = gw.addModel("PlaintextModel", {
+			contentType: "text/plain",
+			modelName: "Plaintext",
+			schema: {
+				schema: apigw.JsonSchemaVersion.DRAFT7,
+				type: apigw.JsonSchemaType.STRING,
 			},
-			requestValidator: authorRequestValidator,
-			methodResponses: authorMethodResponse.methodResponses,
 		});
 
 		const plaintextResponse = {
@@ -93,7 +98,7 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 				{
 					statusCode: "200",
 					responseModels: {
-						"text/plain": apigw.Model.EMPTY_MODEL,
+						"text/plain": plaintextModel,
 					},
 				},
 			],

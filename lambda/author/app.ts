@@ -6,12 +6,13 @@ export const lambdaHandler = async (
 ): Promise<APIGatewayProxyResult> => {
 	const { name, age } = JSON.parse(event.body || "{}");
 
-	if (!name || !age) {
-		return {
-			statusCode: 400,
-			body: JSON.stringify({ message: "Invalid input" }),
-		};
-	}
+	// API Gatewayでvalidateしてるので不要
+	// if (!name || !age) {
+	// 	return {
+	// 		statusCode: 400,
+	// 		body: JSON.stringify({ message: "Invalid input" }),
+	// 	};
+	// }
 
 	return {
 		statusCode: 200,
