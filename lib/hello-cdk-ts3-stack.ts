@@ -13,6 +13,7 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 		//---- Define a lambda function
 		const helloLambda = this.makeNodeLambda("hello");
 		const goodbyeLambda = this.makeNodeLambda("goodbye");
+		const authorLambda = this.makeNodeLambda("author");
 
 		//---- Define API gateway
 		const gw = new apigw.RestApi(this, "apigw", {
@@ -20,8 +21,60 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 			description: "This service serves hello.",
 		});
 
-		gw.root.addResource("hello").addMethod("GET", new apigw.LambdaIntegration(helloLambda));
-		gw.root.addResource("goodbye").addMethod("GET", new apigw.LambdaIntegration(goodbyeLambda));
+		const authorRequestModel = gw.addModel("AuthorRequestModel", {
+			contentType: "application/json",
+			modelName: "AuthorRequest",
+			schema: {
+				schema: apigw.JsonSchemaVersion.DRAFT7,
+				type: apigw.JsonSchemaType.OBJECT,
+				properties: {
+					name: {
+						type: apigw.JsonSchemaType.STRING,
+						minLength: 3,
+						maxLength: 150,
+						// example:が使えない
+					},
+					age: {
+						type: apigw.JsonSchemaType.NUMBER,
+						minimum: 0,
+						maximum: 150,
+						// example:が使えない
+					},
+				},
+				required: ["name", "age"],
+			},
+		});
+
+		const authorRequestValidator = new apigw.RequestValidator(this, "AuthorRequestValidator", {
+			restApi: gw,
+			requestValidatorName: "AuthorRequestValidator",
+			validateRequestBody: true,
+		});
+
+		gw.root.addResource("author").addMethod("POST", new apigw.LambdaIntegration(authorLambda), {
+			requestModels: {
+				"application/json": authorRequestModel,
+			},
+			requestValidator: authorRequestValidator,
+		});
+		// gw.root.addResource("author").addMethod("POST", new apigw.LambdaIntegration(authorLambda));
+
+		const plaintextResponse = {
+			methodResponses: [
+				{
+					statusCode: "200",
+					responseModels: {
+						"text/plain": apigw.Model.EMPTY_MODEL,
+					},
+				},
+			],
+		};
+		gw.root
+			.addResource("hello")
+			.addMethod("GET", new apigw.LambdaIntegration(helloLambda), plaintextResponse);
+		gw.root
+			.addResource("goodbye")
+			.addMethod("GET", new apigw.LambdaIntegration(goodbyeLambda), plaintextResponse);
 
 		new cdk.CfnOutput(this, "endpoint", {
 			value: gw.url,
