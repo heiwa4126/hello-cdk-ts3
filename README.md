@@ -7,12 +7,15 @@ Bun にした
 
 ## 手順
 
+bun 使ってるけど pnpm や npm(遅い)でも OK.
+
 ```sh
 bun i
 bun run layer # ./layers/を作って ./node_modulesからsymlinkを張る
-bun run list  # "HelloCdkTs3"
-bun run bootstrap # 一度もCDKを実行したことのないリージョンではこれを実行。CloudFormationにスタックCDKToolkitができる。二度やっても大丈夫
+bun run list  # (オプション) "HelloCdkTs3"
+bun run bootstrap # (状況によって実行) 一度もCDKを実行したことのないリージョンではこれを実行。CloudFormationにスタックCDKToolkitができる。二度やっても大丈夫
 bun run synth > tmp.yml # (オプション) tmp.ymlにCloudFormationが出る。チェック用
+bun run helloFunction # (オプション) デプロイ前にlambdaをローカルで実行。AWS SAMとDockerが必要
 bun run deploy
 #
 bun run diff
