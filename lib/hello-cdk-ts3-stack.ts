@@ -44,20 +44,49 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 				required: ["name", "age"],
 			},
 		});
+		const authorResponseModel = gw.addModel("AuthorResponseModel", {
+			contentType: "application/json",
+			modelName: "AuthorResponse",
+			schema: {
+				schema: apigw.JsonSchemaVersion.DRAFT7,
+				type: apigw.JsonSchemaType.OBJECT,
+				properties: {
+					success: { type: apigw.JsonSchemaType.BOOLEAN },
+					message: { type: apigw.JsonSchemaType.STRING },
+				},
+				required: ["success", "message"],
+			},
+		});
+
+		const authorMethodResponse = {
+			methodResponses: [
+				{
+					statusCode: "200",
+					responseModels: {
+						"application/json": authorResponseModel,
+					},
+				},
+				{
+					statusCode: "400",
+					responseModels: {
+						"application/json": apigw.Model.ERROR_MODEL,
+					},
+				},
+			],
+		};
 
 		const authorRequestValidator = new apigw.RequestValidator(this, "AuthorRequestValidator", {
 			restApi: gw,
 			requestValidatorName: "AuthorRequestValidator",
 			validateRequestBody: true,
 		});
-
 		gw.root.addResource("author").addMethod("POST", new apigw.LambdaIntegration(authorLambda), {
 			requestModels: {
 				"application/json": authorRequestModel,
 			},
 			requestValidator: authorRequestValidator,
+			methodResponses: authorMethodResponse.methodResponses,
 		});
-		// gw.root.addResource("author").addMethod("POST", new apigw.LambdaIntegration(authorLambda));
 
 		const plaintextResponse = {
 			methodResponses: [
@@ -78,6 +107,9 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 
 		new cdk.CfnOutput(this, "endpoint", {
 			value: gw.url,
+		});
+		new cdk.CfnOutput(this, "apigw_id", {
+			value: gw.restApiId,
 		});
 	}
 

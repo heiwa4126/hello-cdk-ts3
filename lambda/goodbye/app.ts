@@ -1,6 +1,9 @@
-export const lambdaHandler = async (event, context) => {
-	return {
-		statusCode: 200,
-		body: "Goodbye cruel World!",
-	};
+import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda";
+import { plainTextlambdaHandler } from "../lib/plaintext";
+
+export const lambdaHandler = async (
+	event: APIGatewayProxyEvent,
+	context: Context,
+): Promise<APIGatewayProxyResult> => {
+	return plainTextlambdaHandler(event, context, "Goodbye cruel World!");
 };
