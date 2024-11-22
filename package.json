@@ -15,7 +15,9 @@
 		"synth": "cdk synth",
 		"deploy": "cdk deploy --outputs-file outputs.json",
 		"diff": "cdk diff",
-		"destroy": "cdk destroy"
+		"destroy": "cdk destroy",
+		"helloFunction": "sam local invoke -t cdk.out/HelloCdkTs3.template.json helloFunction",
+		"goodbyeFunction": "sam local invoke -t cdk.out/HelloCdkTs3.template.json goodbyeFunction"
 	},
 	"devDependencies": {
 		"@types/config": "^3.3.5",
