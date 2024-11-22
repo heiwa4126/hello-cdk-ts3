@@ -6,8 +6,6 @@
 		"hello-cdk-ts3": "bin/hello-cdk-ts3.js"
 	},
 	"scripts": {
-		"build": "bun build",
-		"watch": "bun run watch",
 		"test": "jest",
 		"format": "biome format --write . && dprint fmt && textlint --fix \"**/*.md\"",
 		"check": "biome check --write . && dprint check",
