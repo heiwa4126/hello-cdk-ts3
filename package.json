@@ -13,7 +13,7 @@
 		"layer": "scripts/makeLayer.sh",
 		"list": "cdk list",
 		"synth": "cdk synth",
-		"deploy": "cdk deploy --outputs-file outputs.json",
+		"deploy": "cdk deploy --outputs-file outputs.tmp.json",
 		"diff": "cdk diff",
 		"destroy": "cdk destroy",
 		"helloFunction": "sam local invoke -t cdk.out/HelloCdkTs3.template.json helloFunction",

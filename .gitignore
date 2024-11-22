@@ -13,8 +13,8 @@ outputs.json
 
 tmp/
 *.tmp
+*.tmp.*
 tmp.*
 
 layers/
 *.tgz
-
