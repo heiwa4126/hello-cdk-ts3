@@ -1,6 +1,6 @@
 import cdk from "aws-cdk-lib";
 import * as apigw from "aws-cdk-lib/aws-apigateway";
-import iam from "aws-cdk-lib/aws-iam";
+// import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction, OutputFormat } from "aws-cdk-lib/aws-lambda-nodejs";
 import logs from "aws-cdk-lib/aws-logs";
@@ -59,16 +59,16 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 			},
 		});
 
-		const authorRequestValidator = new apigw.RequestValidator(this, "AuthorRequestValidator", {
+		const requestBodyValidator = new apigw.RequestValidator(this, "RequestBodyValidator", {
 			restApi: gw,
-			requestValidatorName: "AuthorRequestValidator",
+			// requestValidatorName: "requestBodyValidator",
 			validateRequestBody: true,
 		});
 		gw.root.addResource("author").addMethod("POST", new apigw.LambdaIntegration(authorLambda), {
 			requestModels: {
 				"application/json": authorRequestModel,
 			},
-			requestValidator: authorRequestValidator,
+			requestValidator: requestBodyValidator,
 			methodResponses: [
 				{
 					statusCode: "200",
@@ -128,19 +128,14 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 				format: OutputFormat.ESM,
 				// externalModules: ["@aws-sdk/*", "date-fns"], // AWS SDKとdate-fnsは外部モジュールとして扱う
 			},
-			// 特に必要な権限がない場合はこのinitialPolicyだけでOK。(AWSLambdaBasicExecutionRoleと同じ内容)
-			initialPolicy: [
-				new iam.PolicyStatement({
-					actions: ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
-					resources: ["*"],
-				}),
-			],
-			//// 普通はこのようにRoleを作成する。
+			// // Roleを書かないとAWSLambdaBasicExecutionRoleを含んだRoleが勝手に作られる。
+			// // 普通はこのようにRoleを作成する。
 			// role: new iam.Role(this, `${functionName}Role`, {
 			// 	assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
 			// 	managedPolicies: [
 			// 		iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
 			// 	],
+			// 	inlinePolicies: {...}
 			// }),
 		});
 		// Create a CloudWatch Logs Log Group for myFunction

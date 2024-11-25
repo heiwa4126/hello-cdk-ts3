@@ -5,5 +5,5 @@ export const lambdaHandler = async (
 	event: APIGatewayProxyEvent,
 	context: Context,
 ): Promise<APIGatewayProxyResult> => {
-	return plainTextlambdaHandler(event, context, "Hello, World!");
+	return plainTextlambdaHandler(event, context, "Hello, World.");
 };
