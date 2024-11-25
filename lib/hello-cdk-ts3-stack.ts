@@ -128,12 +128,20 @@ export class HelloCdkTs3Stack extends cdk.Stack {
 				format: OutputFormat.ESM,
 				// externalModules: ["@aws-sdk/*", "date-fns"], // AWS SDKとdate-fnsは外部モジュールとして扱う
 			},
-			role: new iam.Role(this, `${functionName}Role`, {
-				assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-				managedPolicies: [
-					iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
-				],
-			}),
+			// 特に必要な権限がない場合はこのinitialPolicyだけでOK。(AWSLambdaBasicExecutionRoleと同じ内容)
+			initialPolicy: [
+				new iam.PolicyStatement({
+					actions: ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"],
+					resources: ["*"],
+				}),
+			],
+			//// 普通はこのようにRoleを作成する。
+			// role: new iam.Role(this, `${functionName}Role`, {
+			// 	assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
+			// 	managedPolicies: [
+			// 		iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSLambdaBasicExecutionRole"),
+			// 	],
+			// }),
 		});
 		// Create a CloudWatch Logs Log Group for myFunction
 		new logs.LogGroup(this, `${functionName}LogGroup`, {
