@@ -3,7 +3,7 @@ import * as apigw from "aws-cdk-lib/aws-apigateway";
 // import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction, OutputFormat } from "aws-cdk-lib/aws-lambda-nodejs";
-import logs from "aws-cdk-lib/aws-logs";
+import * as logs from "aws-cdk-lib/aws-logs";
 import type { Construct } from "constructs";
 
 export class HelloCdkTs3Stack extends cdk.Stack {
